@@ -1,22 +1,32 @@
 import PropTypes from 'prop-types';
+import {
+  Container,
+  Item,
+  Text,
+  Btn,
+  PersonOutline,
+  CallOutline,
+} from './ContactsList.stylid';
 
 const ContactsList = ({ contacts, onDeleteContact }) => (
-  <ul>
+  <Container>
     {contacts.map(({ id, name, number }) => (
-      <li key={id}>
-        <p>
-          {name}: {number}
-        </p>
-        <button
+      <Item key={id}>
+        <Text>
+          <PersonOutline size={22} />
+          {name}: <CallOutline size={22} />
+          {number}
+        </Text>
+        <Btn
           type="button"
           className="TodoList__btn"
           onClick={() => onDeleteContact(id)}
         >
           Delete
-        </button>
-      </li>
+        </Btn>
+      </Item>
     ))}
-  </ul>
+  </Container>
 );
 
 export default ContactsList;

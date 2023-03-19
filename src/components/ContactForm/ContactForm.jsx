@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
+import { Input, Forms, Button } from './ContactForm.styled';
 
 const initialValues = {
   name: '',
@@ -16,11 +17,10 @@ const ContactForm = ({ onSubmit }) => {
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      <Form>
+      <Forms>
         <label>
           Name
-          <br />
-          <Field
+          <Input
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -28,12 +28,9 @@ const ContactForm = ({ onSubmit }) => {
             required
           />
         </label>
-        <br />
-        <br />
         <label>
           Number
-          <br />
-          <Field
+          <Input
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -41,10 +38,9 @@ const ContactForm = ({ onSubmit }) => {
             required
           />
         </label>
-        <br />
-        <br />
-        <button type="submit">Add contact</button>
-      </Form>
+
+        <Button type="submit">Add contact</Button>
+      </Forms>
     </Formik>
   );
 };
