@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
+import { Report } from 'notiflix/build/notiflix-report-aio';
 
 import ContactForm from './ContactForm/ContactForm';
 import ContactsList from './ContactsList/ContactsList';
@@ -17,23 +18,37 @@ class App extends Component {
     ],
     filter: '',
   };
-  addContact = ({ name, number }) => {
-    const abonent = {
-      id: nanoid(),
-      name,
-      number,
-    };
 
-    this.setState(prevState => ({
-      contacts: [abonent, ...prevState.contacts],
-    }));
+  addContact = ({ name, number }) => {
+    const check = this.nameCheck(name);
+
+    if (check.length <= 0) {
+      const subscriber = {
+        id: nanoid(),
+        name,
+        number,
+      };
+
+      this.setState(prevState => ({
+        contacts: [subscriber, ...prevState.contacts],
+      }));
+      return;
+    }
+    // alert(`${name} is already in contacts`);
+    Report.failure('Warning!', `"${name}" is already in contacts`, 'Okay');
+  };
+
+  nameCheck = name => {
+    const { contacts } = this.state;
+
+    return contacts.filter(contact => contact.name.includes(name));
   };
 
   changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
   };
 
-  getVisibleTodos = () => {
+  getVisibleContacts = () => {
     const { filter, contacts } = this.state;
 
     const normaliseFilter = filter.toLowerCase();
@@ -42,9 +57,15 @@ class App extends Component {
     );
   };
 
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
     const { filter } = this.state;
-    const visibleContacts = this.getVisibleTodos();
+    const visibleContacts = this.getVisibleContacts();
 
     return (
       <Container>
@@ -53,7 +74,10 @@ class App extends Component {
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
-        <ContactsList contacts={visibleContacts} />
+        <ContactsList
+          contacts={visibleContacts}
+          onDeleteContact={this.deleteContact}
+        />
       </Container>
     );
   }
