@@ -17,11 +17,7 @@ const ContactsList = ({ contacts, onDeleteContact }) => (
           {name}: <CallOutline size={22} />
           {number}
         </Text>
-        <Btn
-          type="button"
-          className="TodoList__btn"
-          onClick={() => onDeleteContact(id)}
-        >
+        <Btn type="button" onClick={() => onDeleteContact(id)}>
           Delete
         </Btn>
       </Item>
